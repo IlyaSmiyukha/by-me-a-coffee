@@ -3,8 +3,6 @@ import {
   createAsyncThunk
  } from '@reduxjs/toolkit'
 
- import { ethers } from 'ethers'
-
 const initialState = {
   isConnected: false,
   currentUser: '',
