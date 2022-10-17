@@ -1,25 +1,60 @@
-import { createSlice } from '@reduxjs/toolkit'
+import {
+  createSlice,
+  createAsyncThunk
+ } from '@reduxjs/toolkit'
+
+ import { ethers } from 'ethers'
 
 const initialState = {
-  isConected: false
+  isConnected: false,
+  currentUser: '',
+  transactionsList: [],
+  error: null
 }
+
+export const connect = createAsyncThunk(
+  'WALLET/CONNECT',
+  async () => {
+    try {
+     const { ethereum } = window;
+
+     if (!ethereum) {
+       return 'Try again later';
+     }
+
+     const accounts = await ethereum.request({
+       method: "eth_requestAccounts",
+     });
+     return accounts
+   } catch (error) {
+     console.log(error);
+   }
+  }
+)
 
 export const walletSlice = createSlice({
   name: 'wallet',
   initialState,
   reducers: {
-    connect: (state) => {
-      state.isConected = true
-    },
     disconnect: (state) => {
-      state.isConected = false
+      state.isConnected = false;
+      state.currentUser = "";
     },
+  },
+  extraReducers: (builder) => {
+    // Add reducers for additional action types here, and handle loading state as needed
+    builder.addCase(connect.fulfilled, (state, action) => {
+      // Add user to the state array
+      state.isConnected = true;
+      state.currentUser = action.payload[0]
+    })
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { connect, disconnect } = walletSlice.actions
+export const { disconnect } = walletSlice.actions
 
-export const getIsConected = (state) => state.wallet.isConected
+export const getisConnected = (state) => state.wallet.isConnected
+export const getUser = (state) => state.wallet.currentUser
 
 export default walletSlice.reducer

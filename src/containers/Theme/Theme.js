@@ -5,7 +5,8 @@ const theme = {
   colors: {
     background: '#e6e6e6',
     text: '#0d0d0d',
-    containerBackground: '#ececec'
+    containerBackground: '#ececec',
+    accentColor: '#f58420'
   }
 };
 

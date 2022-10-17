@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import styled from "styled-components";
 
-import { getIsConected } from 'store/slice/walletSlice'
+import { getisConnected } from 'store/slice/walletSlice'
 
 import Content from 'containers/Content';
 import Header from 'components/Header';
@@ -19,14 +19,13 @@ const MainContainer = styled.div`
 `;
 
 const  App = () => {
-  const isConected = useSelector(state => getIsConected(state));
+  const isConnected = useSelector(state => getisConnected(state));
 
   return (
       <MainContainer>
         <Header />
-        {
-          isConected ? <Content /> : <Placeholder />
-        }
+        <Placeholder isConnected={isConnected}/>
+        {isConnected && <Content />}
       </MainContainer>
   );
 }

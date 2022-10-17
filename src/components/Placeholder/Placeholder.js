@@ -7,6 +7,8 @@ const PlaceholderContainer = styled.section`
   flex-direction: column;
   align-items: center;
   text-align: center;
+  transition: height .2s;
+  padding: 0 10px;
 `;
 
 const H1 = styled.h1`
@@ -21,9 +23,13 @@ const P = styled.p`
 const A = styled.a`
 `
 
-const  Placeholder = () => {
+const  Placeholder = ({ isConnected }) => {
+  const styles = {
+    height: isConnected ? '150px' : '100%'
+  }
+
   return (
-    <PlaceholderContainer>
+    <PlaceholderContainer style={styles}>
       <H1>Buy Me A Crypto Coffee</H1>
       <P>Small app working on Goerli network. Was made for fun.</P>
       <P>

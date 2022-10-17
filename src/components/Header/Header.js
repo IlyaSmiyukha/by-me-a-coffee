@@ -1,4 +1,8 @@
+import { useSelector, useDispatch } from 'react-redux';
 import styled from "styled-components";
+import { darken } from 'polished';
+
+import { connect, getUser } from 'store/slice/walletSlice';
 
 const HeaderWrap = styled.header`
   color:  ${props => props.theme.colors.text};
@@ -30,7 +34,7 @@ const Btn = styled.button`
   line-height: 40px;
   padding: 0 10px;
   color:  ${props => props.theme.colors.background};
-  background: #f58420;
+  background: ${props => props.theme.colors.accentColor};
   cursor: pointer;
   transition: background .1s;
   border: none;
@@ -38,16 +42,44 @@ const Btn = styled.button`
   font-size: 1.2rem;
 
   &:hover {
-    background: #e27624;
+    background: ${props => darken(0.1, props.theme.colors.accentColor)};
+  }
+`
+
+const User = styled.div`
+  display: flex;
+  align-items: center;
+
+  &:before {
+    content: '';
+    display: block;
+    min-width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23e6e6e6' d='M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V192c0-35.3-28.7-64-64-64H80c-8.8 0-16-7.2-16-16s7.2-16 16-16H448c17.7 0 32-14.3 32-32s-14.3-32-32-32H64zM416 336c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z'/%3E%3C/svg%3E");
   }
 `
 
 const  Header = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(state => getUser(state));
+
+  const handleClick = () => {
+    dispatch(connect())
+  }
+
   return (
     <HeaderWrap>
       <HeaderContainer>
         <Logo />
-        <Btn>Connect with MetaMask</Btn>
+        {
+          user ?
+              <Btn><User>Connected</User></Btn>
+              : <Btn onClick={handleClick}>Connect with MetaMask</Btn>
+        }
       </HeaderContainer>
     </HeaderWrap>
   );
