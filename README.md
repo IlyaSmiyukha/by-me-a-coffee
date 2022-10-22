@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Buy Me A Crypto Coffee
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Small app working on Goerli network. Was made for fun.
 
 ## Available Scripts
 

@@ -60,7 +60,7 @@ export const buyCoffee = createAsyncThunk(
           signer
         );
 
-        const coffeeTxn = await contract.buyCoffee(
+        await contract.buyCoffee(
           message ? message : "No message",
           name ? name : "Anonymous",
           ethers.utils.parseEther(price.toString()),
