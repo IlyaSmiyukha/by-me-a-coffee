@@ -3,9 +3,10 @@ import styled from "styled-components";
 
 import { getisConnected } from 'store/slice/walletSlice'
 
-import Content from 'containers/Content';
 import Header from 'components/Header';
 import Placeholder from 'components/Placeholder';
+import Form from 'containers/Form';
+import List from 'containers/List';
 
 const MainContainer = styled.div`
   position: fixed;
@@ -15,7 +16,22 @@ const MainContainer = styled.div`
   right: 0;
   background-color: ${props => props.theme.colors.background};
   color:  ${props => props.theme.colors.text};
-  transition: background-color .5s
+  transition: background-color .5s;
+  overflow: auto;
+  padding: 50px 20px 20px
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column-reverse;
+
+
+  @media(min-width: 800px) {
+    align-items: flex-start;
+    flex-direction: row;
+  }
 `;
 
 const  App = () => {
@@ -25,7 +41,13 @@ const  App = () => {
       <MainContainer>
         <Header />
         <Placeholder isConnected={isConnected}/>
-        {isConnected && <Content />}
+        {
+          isConnected && <ContentContainer>
+              <List />
+              <Form />
+            </ContentContainer>
+        }
+
       </MainContainer>
   );
 }

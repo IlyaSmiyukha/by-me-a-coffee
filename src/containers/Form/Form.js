@@ -1,22 +1,26 @@
+import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react';
 import styled from "styled-components";
+import { buyCoffee, getisConnected } from 'store/slice/walletSlice'
 
-import Item from 'components/Item'
+import PriceItem from 'components/PriceItem'
 import Button from 'components/Button'
 
 const ContentContainer = styled.section`
-  padding: 0 10px;
-  margin: 0 auto;
-`;
-
-const Form =  styled.div`
   width: 500px;
-  margin: 40px auto;
-
+  max-width: 100%;
+  padding: 20px;
+  margin: 20px;
+  background: ${props => props.theme.colors.containerBackground};
   button {
     width: 100%;
   }
-`
+
+  @media(min-width: 800px) {
+    width: 300px;
+    margin: 0 0 0 20px;
+  }
+`;
 
 const ItemsContainer = styled.div`
   display: flex;
@@ -54,23 +58,24 @@ const InputMessage = styled.textarea`
 
 const itemsList = [
   {
-    name: 'Coffe',
     price: '5$',
     id: 1
   },
   {
-    name: 'Coffe & cupcake',
     price: '10$',
     id: 2
   },
   {
-    name: 'Coffe & pizza',
     price: '15$',
     id: 3
   },
 ]
 
-const  Content = () => {
+const coffeePrice = 0.0038;
+
+const  Form = () => {
+  const dispatch = useDispatch();
+  const isConnected = useSelector(state => getisConnected(state))
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [activeItem, setActiveItem] = useState(1);
@@ -78,33 +83,41 @@ const  Content = () => {
   const changeName = e => setName(e.target.value);
   const changeMessage = e => setMessage(e.target.value);
   const onItemChange = id => setActiveItem(id);
-  const onSubmit = () => { console.error(name, message, activeItem); }
+  const onSubmit = () => {
+    dispatch(buyCoffee({
+      price: coffeePrice * activeItem,
+      message,
+      name
+    }))
+ }
 
   return (
     <ContentContainer>
       <ItemsContainer>
+
         {
-          itemsList.map(item => <Item key={item.id}
+          itemsList.map(item => <PriceItem key={item.id}
                                       {...item}
                                       isActive={item.id === activeItem}
                                       onChange={onItemChange}/>)
         }
+
       </ItemsContainer>
 
-      <Form>
-        <InputName
-                  onChange={changeName}
-                  value={name}
-                  placeholder='Enter your name (optional)' />
-        <InputMessage
-                  onChange={changeMessage}
-                  value={message}
-                  placeholder='Enter your message (optional)' />
-        <Button onClick={onSubmit}>Send transaction</Button>
-      </Form>
+      <InputName
+                onChange={changeName}
+                value={name}
+                placeholder='Enter your name (optional)' />
+      <InputMessage
+                onChange={changeMessage}
+                value={message}
+                placeholder='Enter your message (optional)' />
+      <Button onClick={onSubmit} disabled={!isConnected}>
+        {isConnected ? 'Send transaction' : 'Connect wallet first'}
+      </Button>
 
     </ContentContainer>
   );
 }
 
-export default Content;
+export default Form;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const PlaceholderContainer = styled.section`
-  height: 100%;
+  height: 150px;
   display: flex;
   justify-content: center;
   flex-direction: column;

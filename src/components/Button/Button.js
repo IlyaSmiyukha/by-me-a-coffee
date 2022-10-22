@@ -16,11 +16,19 @@ const Btn = styled.button`
   &:hover {
     background: ${props => darken(0.1, props.theme.colors.accentColor)};
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .8;
+    &:hover {
+      background: ${props => props.theme.colors.accentColor};
+    }
+  }
 `
 
 
-const  Button = ({ onClick, children }) => {
-  return <Btn onClick={onClick}>{ children }</Btn>;
+const  Button = ({ onClick, children, disabled = false }) => {
+  return <Btn onClick={onClick} disabled={disabled}>{ children }</Btn>;
 }
 
 export default Button;
