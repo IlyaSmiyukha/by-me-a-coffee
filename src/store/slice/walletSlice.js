@@ -6,7 +6,7 @@ import {
  import { ethers } from 'ethers'
 
 import { contractABI } from 'utils/BuyMeACryptoCoffee'
-const contractAddress = '0xfBa842E282A9131C7cdd351a1aAaD530c8e4EcFf'
+const contractAddress = '0x87BCAadB478b681DcE073f20FA703a7D6100e65c'
 
 const initialState = {
   isConnected: false,
@@ -93,12 +93,12 @@ export const fetchCoffee = createAsyncThunk(
         );
 
         const list = await contract.getAllCoffee();
-
         return list.map((coffee) => ({
             address: coffee.giver,
             timestamp: Number(coffee.timestamp),
             message: coffee.message,
             name: coffee.name,
+            value: ethers.utils.formatEther(coffee.value)
         }));
       } else {
         console.log("Ethereum object doesn't exist!");

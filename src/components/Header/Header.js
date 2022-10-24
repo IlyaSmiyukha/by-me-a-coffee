@@ -59,15 +59,11 @@ const  Header = () => {
     dispatch(connect())
   }
 
-  const handleDisconnetClick = () => {
-    // dispatch(connect())
-  }
-
   return (
     <HeaderWrap>
       <HeaderContainer>
         <Logo />
-        <Button onClick={!isConnected ? handleConnetClick : handleDisconnetClick}>
+        <Button onClick={handleConnetClick}>
            <User>{ isConnected ? 'Connected' : 'Connect with MetaMask'}</User>
         </Button>
       </HeaderContainer>
