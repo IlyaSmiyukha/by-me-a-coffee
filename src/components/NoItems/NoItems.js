@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const NoItemsContaier = styled.section`
-  height: 150px;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

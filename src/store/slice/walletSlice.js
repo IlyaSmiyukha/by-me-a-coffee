@@ -6,7 +6,7 @@ import {
  import { ethers } from 'ethers'
 
 import { contractABI } from 'utils/BuyMeACryptoCoffee'
-const contractAddress = '0x87BCAadB478b681DcE073f20FA703a7D6100e65c'
+const contractAddress = '0x3575689c0C6c34e325b4EFdb617fDe1142FE3654'
 
 const initialState = {
   isConnected: false,
