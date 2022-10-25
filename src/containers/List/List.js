@@ -10,8 +10,13 @@ import { fetchCoffee, getList, getListIsLoading } from 'store/slice/walletSlice'
 const ListContainer = styled.div`
   width: 500px;
   max-width: 100%;
-  padding: 0 20px;
+  padding: 0 20px 20px;
   background: ${props => props.theme.colors.containerBackground};
+  overflow: auto;
+
+  @media(min-width: 800px) {
+    height: calc(100% - 170px);
+  }
 `;
 
 

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const ItemContainer = styled.div`
-  margin: 20px 0;
+  margin: 20px 0 0;
   color: ${props => props.theme.colors.text};
   font-size: 1.3rem;
   overflow: hidden;
@@ -11,6 +11,7 @@ const ItemContainer = styled.div`
 
 const ItemInfo = styled.div`
   font-size: 1.5rem;
+  width: calc(100% - 60px);
 `;
 
 const InfoDiv = styled.div`
@@ -19,7 +20,6 @@ const InfoDiv = styled.div`
   font-size: 1.2rem;
   white-space: nowrap;
   overflow: hidden;
-  width: 100%;
   text-overflow: ellipsis;
   margin-bottom: 3px;
 `;
@@ -45,7 +45,6 @@ const ListItem = ({ address, name, message, timestamp, value }) => {
   const date = new Date(timestamp * 1000);
 
   const getPrice = () => {
-    console.error(value);
     return (value/coffeePrice === 3 && '15$') || (value/coffeePrice === 2 && '10$') || '5$';
   }
 

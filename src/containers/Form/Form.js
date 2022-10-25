@@ -1,10 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react';
 import styled from "styled-components";
-import { buyCoffee, getisConnected } from 'store/slice/walletSlice'
+import { buyCoffee, getisConnected, getIsTransactionPending } from 'store/slice/walletSlice'
 
-import PriceItem from 'components/PriceItem'
-import Button from 'components/Button'
+import PriceItem from 'components/PriceItem';
+import TransactionLayer from 'components/TransactionLayer';
+import Button from 'components/Button';
 
 const ContentContainer = styled.section`
   width: 500px;
@@ -12,6 +13,7 @@ const ContentContainer = styled.section`
   padding: 20px;
   margin: 20px;
   background: ${props => props.theme.colors.containerBackground};
+  position: relative;
   button {
     width: 100%;
   }
@@ -75,7 +77,8 @@ const coffeePrice = 0.0038;
 
 const  Form = () => {
   const dispatch = useDispatch();
-  const isConnected = useSelector(state => getisConnected(state))
+  const isConnected = useSelector(state => getisConnected(state));
+  const isTransactionPending = useSelector(state => getIsTransactionPending(state));
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [activeItem, setActiveItem] = useState(1);
@@ -94,6 +97,10 @@ const  Form = () => {
   return (
     <ContentContainer>
       <ItemsContainer>
+
+        {
+          isTransactionPending && <TransactionLayer />
+        }
 
         {
           itemsList.map(item => <PriceItem key={item.id}

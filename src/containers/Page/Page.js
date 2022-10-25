@@ -17,8 +17,8 @@ const MainContainer = styled.div`
   background-color: ${props => props.theme.colors.background};
   color:  ${props => props.theme.colors.text};
   transition: background-color .5s;
-  overflow: auto;
-  padding: 50px 20px 20px
+  overflow: hidden;
+  padding: 50px 20px 20px;
 `;
 
 const ContentContainer = styled.div`
@@ -26,7 +26,7 @@ const ContentContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column-reverse;
-
+  height: 100%;
 
   @media(min-width: 800px) {
     align-items: flex-start;

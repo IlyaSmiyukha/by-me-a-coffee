@@ -13,7 +13,8 @@ const initialState = {
   currentUser: '',
   list: [],
   error: null,
-  isListLoading: false
+  isListLoading: false,
+  isTransactionPending: false
 }
 
 export const connect = createAsyncThunk(
@@ -60,14 +61,27 @@ export const buyCoffee = createAsyncThunk(
           signer
         );
 
-        await contract.buyCoffee(
-          message ? message : "No message",
-          name ? name : "Anonymous",
+        const tx = await contract.buyCoffee(
+          message || 'No message',
+          name || 'Anonymous',
           ethers.utils.parseEther(price.toString()),
           {
             gasLimit: 300000,
           }
         );
+        if (tx) {
+          let receipt = await tx.wait();
+
+          return {
+            address: receipt.from,
+            timestamp: Date.now() / 1000,
+            message: message || 'No message',
+            name: name || 'Anonymous',
+            value: price
+          }
+        } else {
+          return null
+        }
       } else {
         return 'Try again later';
       }
@@ -85,13 +99,11 @@ export const fetchCoffee = createAsyncThunk(
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-
         const contract = new ethers.Contract(
           contractAddress,
           contractABI.abi,
           signer
         );
-
         const list = await contract.getAllCoffee();
         return list.map((coffee) => ({
             address: coffee.giver,
@@ -133,7 +145,19 @@ export const walletSlice = createSlice({
     .addCase(fetchCoffee.fulfilled, (state, action) => {
       // Add user to the state array
       state.isListLoading = false
-      state.list = action.payload || []
+      state.list = action.payload.reverse() || []
+    })
+    .addCase(buyCoffee.pending, (state, action) => {
+      // Add user to the state array
+      state.isTransactionPending = true;
+    })
+    .addCase(buyCoffee.fulfilled, (state, action) => {
+      // Add user to the state array
+      state.isTransactionPending = false;
+      state.list = action.payload ? [
+        action.payload,
+        ...state.list,
+      ] : state.list
     })
   },
 })
@@ -145,5 +169,6 @@ export const getisConnected = (state) => state.wallet.isConnected
 export const getUser = (state) => state.wallet.currentUser
 export const getList = (state) => state.wallet.list
 export const getListIsLoading = (state) => state.wallet.isListLoading
+export const getIsTransactionPending = (state) => state.wallet.isTransactionPending
 
 export default walletSlice.reducer
